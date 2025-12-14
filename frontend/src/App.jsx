@@ -19,7 +19,8 @@ function App() {
   const [selectedIndicators, setSelectedIndicators] = useState([]);
   const debouncedIndicators = useDebounce(selectedIndicators, 100);
   const [showIndicators, setShowIndicators] = useState(false);
-  const [showSR, setShowSR] = useState(false); // <--- NOWY STAN
+  const [showSR, setShowSR] = useState(false);
+  const [showVolume, setShowVolume] = useState(true);
   const [selectedMethod, setSelectedMethod] = useState('simple_ma');
   const [horizon, setHorizon] = useState(14);
   const [aiStatus, setAiStatus] = useState('Idle');
@@ -94,7 +95,8 @@ function App() {
         availableIndicators={availableIndicators}
         toggleIndicator={toggleIndicator}
         showIndicators={showIndicators} setShowIndicators={setShowIndicators}
-        showSR={showSR} setShowSR={setShowSR} // <--- PRZEKAZANIE DO TOPBAR
+        showSR={showSR} setShowSR={setShowSR}
+        showVolume={showVolume} setShowVolume={setShowVolume}
         selectedMethod={selectedMethod} setSelectedMethod={setSelectedMethod}
         availableMethods={availableMethods}
         handleFetch={handleFetch}
@@ -126,7 +128,8 @@ function App() {
             appMode={appMode}
             onPriceUpdate={setMarketData}
             predictionHistory={predictionHistory}
-            showSR={showSR} // <--- PRZEKAZANIE DO WYKRESU
+            showSR={showSR}
+            showVolume={showVolume}
         />
       </main>
     </div>

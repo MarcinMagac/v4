@@ -23,16 +23,6 @@ def register_indicator(name, type='overlay', color='#ffffff', panel=None, viz_ty
         return func
     return decorator
 
-# --- 0. WOLUMEN (DODANO) ---
-@register_indicator("Volume", type='panel', color='#26a69a', panel='volume_panel', viz_type='histogram')
-def calc_volume(df):
-    # Zwracamy surową serię wolumenu.
-    # UWAGA: Kolorowanie (zielony/czerwony) w zależności od Close > Open
-    # jest obsługiwane dodatkowo w main.py, ale ta funkcja jest bazą.
-    if "volume" in df.columns:
-        return df["volume"]
-    return None
-
 # --- 1. WSKAŹNIKI NAKŁADANE (OVERLAYS) ---
 
 @register_indicator("SMA 20", type='overlay', color='#2962ff')

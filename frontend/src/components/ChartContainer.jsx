@@ -1,7 +1,10 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useMemo } from 'react';
 import { createChart, ColorType } from 'lightweight-charts';
 import DrawingToolbar from './DrawingToolbar';
 import { v4 as uuidv4 } from 'uuid';
+
+// BROKER: 15% to standard "Pro". Wystarczy, żeby widzieć trend wskaźnika.
+const PANEL_HEIGHT = 0.12;
 
 const CONFIG = {
   layout: { background: { type: ColorType.Solid, color: '#0b0e11' }, textColor: '#848e9c', fontFamily: "'Inter', sans-serif" },
@@ -11,31 +14,32 @@ const CONFIG = {
   handleScroll: { vertTouchDrag: false },
 };
 
-const ChartContainer = ({ data, appMode, onPriceUpdate }) => {
+const ChartContainer = ({ data, appMode, onPriceUpdate, showSR, showVolume }) => {
   const chartContainerRef = useRef(null);
   const chartInstanceRef = useRef(null);
   const legendRef = useRef(null);
-  const seriesRef = useRef({ candles: null, prediction: null, overlays: [], panels: [] });
+  const seriesRef = useRef({ candles: null, volume: null, prediction: null, overlays: [], panels: [] });
 
-  // --- STATE DLA DRAWING TOOLBOX ---
   const [activeTool, setActiveTool] = useState(null);
   const [drawings, setDrawings] = useState([]);
   const [currentDrawing, setCurrentDrawing] = useState(null);
   // eslint-disable-next-line no-unused-vars
   const [chartVersion, setChartVersion] = useState(0);
 
-  // Load drawings
+  const hasVolumeData = useMemo(() => {
+      if (!data || !data.history) return false;
+      return data.history.some(d => d.volume && d.volume > 0.0001);
+  }, [data]);
+
   useEffect(() => {
     const saved = localStorage.getItem('user_drawings');
     if (saved) setDrawings(JSON.parse(saved));
   }, []);
 
-  // Save drawings
   useEffect(() => {
     localStorage.setItem('user_drawings', JSON.stringify(drawings));
   }, [drawings]);
 
-  // --- 1. INICJALIZACJA WYKRESU ---
   useEffect(() => {
     if (!chartContainerRef.current) return;
 
@@ -43,19 +47,35 @@ const ChartContainer = ({ data, appMode, onPriceUpdate }) => {
       ...CONFIG,
       width: chartContainerRef.current.clientWidth,
       height: chartContainerRef.current.clientHeight,
-      rightPriceScale: { visible: true, borderColor: '#2b3139', scaleMargins: { top: 0.1, bottom: 0.0 } }
+      rightPriceScale: {
+        visible: true,
+        borderColor: '#2b3139',
+        scaleMargins: { top: 0.1, bottom: 0.05 }
+      }
     });
 
-    // Re-render SVG on zoom/scroll
     chart.timeScale().subscribeVisibleTimeRangeChange(() => {
         setChartVersion(v => v + 1);
     });
 
     const candleSeries = chart.addCandlestickSeries({ upColor: '#0ecb81', downColor: '#f6465d', borderVisible: false, wickUpColor: '#0ecb81', wickDownColor: '#f6465d' });
+
+    const volumeSeries = chart.addHistogramSeries({
+        color: '#26a69a',
+        priceFormat: { type: 'volume' },
+        priceScaleId: 'volume_scale',
+    });
+
+    chart.priceScale('volume_scale').applyOptions({
+        scaleMargins: { top: 0.85, bottom: 0 },
+        visible: false,
+    });
+
     const predSeries = chart.addLineSeries({ color: '#fcd535', lineWidth: 2, lineStyle: 2, title: 'AI Forecast', lastValueVisible: false });
 
     chartInstanceRef.current = chart;
     seriesRef.current.candles = candleSeries;
+    seriesRef.current.volume = volumeSeries;
     seriesRef.current.prediction = predSeries;
 
     const handleResize = () => {
@@ -66,21 +86,26 @@ const ChartContainer = ({ data, appMode, onPriceUpdate }) => {
     };
     window.addEventListener('resize', handleResize);
 
-    // Legend Update Logic
     chart.subscribeCrosshairMove(param => {
       if (!legendRef.current || !param.time) return;
       const candleData = param.seriesData.get(candleSeries);
-      let html = '';
-      if (candleData) html += `<div style="margin-bottom: 5px;"><span style="color:#eaecef; font-weight:bold">${candleData.close?.toFixed(2)}</span> <span style="color:#848e9c; font-size:10px">${new Date(param.time * 1000).toLocaleDateString()}</span></div>`;
+      const volumeData = param.seriesData.get(volumeSeries);
 
-      // Overlays (SMA, EMA)
+      let html = '';
+      if (candleData) {
+          html += `<div style="margin-bottom: 5px;">
+            <span style="color:#eaecef; font-weight:bold">${candleData.close?.toFixed(2)}</span>
+            <span style="color:#848e9c; font-size:10px">${new Date(param.time * 1000).toLocaleDateString()}</span>
+            ${volumeData && volumeData.value > 0 ? `<span style="color:#fcd535; font-size:10px; margin-left:8px">VOL: ${Math.round(volumeData.value)}</span>` : ''}
+          </div>`;
+      }
+
       seriesRef.current.overlays.forEach(ov => {
           if (!ov.options().visible) return;
           const val = param.seriesData.get(ov);
           if (val !== undefined) html += `<span style="color:${ov.options().color}; margin-right:8px; font-weight:600; font-size: 10px;">${ov.options().title}:${val.value.toFixed(2)}</span>`;
       });
 
-      // Panels (RSI, MACD)
       seriesRef.current.panels.forEach(panel => {
           if (!panel.series.options().visible) return;
           const val = param.seriesData.get(panel.series);
@@ -96,14 +121,22 @@ const ChartContainer = ({ data, appMode, onPriceUpdate }) => {
     return () => { window.removeEventListener('resize', handleResize); chart.remove(); };
   }, []);
 
-  // --- 2. AKTUALIZACJA DANYCH (Full Logic Restored) ---
   useEffect(() => {
     if (!data || !chartInstanceRef.current) return;
     const chart = chartInstanceRef.current;
 
-    // 2.1 History & Candles
     const history = (data.history || []).map(d => ({ ...d, time: parseInt(d.time) })).sort((a,b)=>a.time-b.time);
     seriesRef.current.candles.setData(history);
+
+    const volumeData = history.map(d => ({
+        time: d.time,
+        value: d.volume || 0,
+        color: d.close >= d.open ? 'rgba(14, 203, 129, 0.7)' : 'rgba(246, 70, 93, 0.7)'
+    }));
+    seriesRef.current.volume.setData(volumeData);
+
+    const shouldDisplayVolume = showVolume && hasVolumeData;
+    seriesRef.current.volume.applyOptions({ visible: shouldDisplayVolume });
 
     if(history.length > 0 && onPriceUpdate) {
         const last = history[history.length-1];
@@ -111,7 +144,6 @@ const ChartContainer = ({ data, appMode, onPriceUpdate }) => {
         onPriceUpdate({ lastPrice: last.close, change: last.close - prev.close, changePercent: ((last.close - prev.close)/prev.close)*100 });
     }
 
-    // 2.2 AI Prediction
     if (appMode === 'lab' && data.predictions?.[0]) {
        const predData = Object.entries(data.predictions[0].forecast_values).map(([t,v]) => ({time: parseInt(t), value:v})).sort((a,b)=>a.time-b.time);
        seriesRef.current.prediction.setData(predData);
@@ -121,15 +153,14 @@ const ChartContainer = ({ data, appMode, onPriceUpdate }) => {
        seriesRef.current.prediction.applyOptions({ visible: false });
     }
 
-    // 2.3 CLEANUP OLD INDICATORS
     seriesRef.current.overlays.forEach(s => chart.removeSeries(s));
     seriesRef.current.overlays = [];
     seriesRef.current.panels.forEach(p => chart.removeSeries(p.series));
     seriesRef.current.panels = [];
 
-    // 2.4 MARKET MODE INDICATORS (Restored Logic)
+    let baseBottomMargin = shouldDisplayVolume ? 0.2 : 0.05;
+
     if (appMode === 'market') {
-        // Overlays (SMA/EMA on main chart)
         if (data.technical_indicators) {
             data.technical_indicators.forEach(ind => {
                 const line = chart.addLineSeries({ color: ind.color, lineWidth: 1, title: ind.name, lastValueVisible: false, priceLineVisible: false });
@@ -138,16 +169,22 @@ const ChartContainer = ({ data, appMode, onPriceUpdate }) => {
             });
         }
 
-        // Panels (RSI/MACD separate panes)
         const panelsData = data.panels || [];
-        const totalPanelsHeight = panelsData.length * 0.25; // 25% height per panel
+        // GEEK: Obliczamy całkowitą wysokość zajętą przez panele (np. 2 panele * 0.15 = 0.3 czyli 30%)
+        const totalPanelsHeight = panelsData.length * PANEL_HEIGHT;
 
-        // Adjust main chart margin to make room for panels
-        chart.priceScale('right').applyOptions({ scaleMargins: { top: 0.05, bottom: totalPanelsHeight } });
+        chart.priceScale('right').applyOptions({
+            scaleMargins: {
+                top: 0.05,
+                bottom: totalPanelsHeight + baseBottomMargin
+            }
+        });
 
         panelsData.forEach((panel, index) => {
-            const topMargin = (1 - totalPanelsHeight) + (index * 0.25);
-            const bottomMargin = Math.max(0, totalPanelsHeight - ((index + 1) * 0.25));
+            // Matematyka pozycjonowania:
+            // myBottom określa gdzie kończy się dany panel (licząc od dołu ekranu)
+            // (index + 1) * PANEL_HEIGHT -> to "piętro" panelu
+            const myBottom = (totalPanelsHeight - ((index + 1) * PANEL_HEIGHT)) + baseBottomMargin;
             const uniqueScaleId = `scale_${panel.id}_${index}`;
 
             panel.series.forEach(s => {
@@ -164,23 +201,22 @@ const ChartContainer = ({ data, appMode, onPriceUpdate }) => {
                 seriesRef.current.panels.push({ series, name: s.name, color: s.color });
             });
 
-            // Configure the separate scale for this panel
+            // GEEK: Tutaj konfigurujemy "okno" dla panelu.
+            // top: 1 - myBottom - PANEL_HEIGHT -> początek panelu (od góry)
+            // bottom: myBottom -> koniec panelu (od dołu)
             chart.priceScale(uniqueScaleId).applyOptions({
                 autoScale: true,
                 visible: true,
                 borderVisible: true,
                 borderColor: '#2b3139',
-                scaleMargins: { top: topMargin, bottom: bottomMargin }
+                scaleMargins: { top: 1 - myBottom - PANEL_HEIGHT, bottom: myBottom }
             });
         });
     } else {
-        // Reset margins if not in market mode
-        chart.priceScale('right').applyOptions({ scaleMargins: { top: 0.1, bottom: 0.0 } });
+        chart.priceScale('right').applyOptions({ scaleMargins: { top: 0.1, bottom: baseBottomMargin } });
     }
-  }, [data, appMode, onPriceUpdate]); // Dodane onPriceUpdate do dependency array
+  }, [data, appMode, onPriceUpdate, showVolume, hasVolumeData]);
 
-
-  // --- 3. LOGIKA RYSOWANIA (Drawing System) ---
   const getChartCoordinates = (e) => {
     const chart = chartInstanceRef.current;
     const series = seriesRef.current.candles;
@@ -226,7 +262,6 @@ const ChartContainer = ({ data, appMode, onPriceUpdate }) => {
     }));
   };
 
-  // --- 4. RENDEROWANIE WARSTWY SVG ---
   const renderShape = (shape, isPreview = false) => {
     const chart = chartInstanceRef.current;
     const series = seriesRef.current.candles;
@@ -269,6 +304,24 @@ const ChartContainer = ({ data, appMode, onPriceUpdate }) => {
         onClearAll={() => setDrawings([])}
         drawingsCount={drawings.length}
       />
+
+      {showVolume && !hasVolumeData && (
+          <div style={{
+              position: 'absolute',
+              bottom: '40px',
+              left: '20px',
+              zIndex: 20,
+              background: 'rgba(30,30,30,0.8)',
+              color: '#f6465d',
+              padding: '5px 10px',
+              fontSize: '11px',
+              borderRadius: '4px',
+              border: '1px solid #f6465d',
+              pointerEvents: 'none'
+          }}>
+              ⚠ NO VOLUME DATA
+          </div>
+      )}
 
       <div ref={chartContainerRef} style={{width: '100%', height: '100%'}} />
 

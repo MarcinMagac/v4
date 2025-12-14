@@ -8,7 +8,7 @@ from core.registry import MethodRegistry
 from core.data_client import client as data_client
 from schemas import ForecastRequest, PredictionResponse, ForecastResult, ChartPanel, IndicatorSeriesDef
 from core.indicators_lib import calculate_indicator, get_indicators_metadata
-from core.backtester import calculate_confidence  # <--- NOWY IMPORT
+from core.backtester import calculate_confidence
 
 app = FastAPI(title="Fintech Engine", version="v32.0_FIXED_TIME")
 
@@ -24,7 +24,6 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 METHODS_DIR = os.path.join(BASE_DIR, "methods")
 registry = MethodRegistry(METHODS_DIR)
 
-# --- TU BYŁ BŁĄD: PRZYWRACAM PEŁNĄ MAPĘ SEKUND ---
 INTERVAL_SECONDS = {
     "1min": 60,
     "5min": 300,
@@ -78,14 +77,11 @@ def format_ta_series(series):
 def generate_prediction(request: ForecastRequest):
     ticker = request.ticker
     interval = request.interval
-    # Zabezpieczenie: Horyzont musi być > 2, żeby narysować linię
     safe_horizon = max(request.horizon, 5)
 
     print(f"[API] Analiza: {ticker} ({interval}) | Horyzont: {safe_horizon}")
 
-    # 1. POBIERANIE DANYCH
     try:
-        # Pobieramy nieco więcej danych, żeby backtester miał na czym pracować
         df_ohlc = data_client.fetch_series(ticker, interval=interval, outputsize=5000)
         if df_ohlc.empty:
             raise Exception("Otrzymano pusty DataFrame z API")
@@ -94,7 +90,6 @@ def generate_prediction(request: ForecastRequest):
         print(f"[API ERROR] {str(e)}")
         raise HTTPException(status_code=500, detail=f"Błąd danych: {str(e)}")
 
-    # 2. WSKAŹNIKI (Bez zmian)
     raw_indicators = {}
     meta_lookup = {m['key']: m for m in get_indicators_metadata()}
 
@@ -135,7 +130,6 @@ def generate_prediction(request: ForecastRequest):
     for pid, slist in panels_map.items():
         final_panels.append(ChartPanel(id=pid, height=160, series=slist))
 
-    # 3. AI PREDICTION + BACKTEST
     results = []
     step = INTERVAL_SECONDS.get(interval, 86400)
     last_timestamp = int(df_ohlc.index[-1].timestamp())
@@ -145,23 +139,16 @@ def generate_prediction(request: ForecastRequest):
         if not method: continue
 
         try:
-            # A. Backtest (Obliczamy pewność algorytmu na historii)
-            # Jeśli brakuje danych, zwróci 0.0, ale nie wywali programu
             confidence = calculate_confidence(method.func, close_series, safe_horizon)
-
-            # B. Prognoza (Właściwa linia przyszłości)
             fc = method.func(close_series, horizon=safe_horizon)
 
-            # Diagnostyka długości (czy Mamba zwróciła płaską linię?)
             if len(fc) < 2:
                 print(f"[AI WARNING] Metoda {method.name} zwróciła tylko {len(fc)} punktów!")
 
             values = fc.values
             fc_dict = {}
 
-            # Budowanie słownika {timestamp: value}
             for i in range(len(values)):
-                # Zabezpieczenie przed wyjściem poza horyzont
                 if i >= safe_horizon: break
 
                 next_ts = last_timestamp + ((i + 1) * step)
@@ -170,7 +157,7 @@ def generate_prediction(request: ForecastRequest):
             results.append(ForecastResult(
                 method_name=method.name,
                 forecast_values=fc_dict,
-                confidence_score=confidence  # Przekazujemy wynik backtestu do frontendu
+                confidence_score=confidence
             ))
             print(f"[AI] Sukces: {method.name} | Pewność: {confidence}% | Punktów: {len(fc_dict)}")
 
@@ -178,10 +165,9 @@ def generate_prediction(request: ForecastRequest):
             print(f"[AI CRITICAL] Błąd metody {key}: {e}")
             continue
 
-    # 4. HISTORIA
     temp = df_ohlc.reset_index()
     temp['time'] = temp['datetime'].astype('int64') // 10 ** 9
-    history = temp[['time', 'open', 'high', 'low', 'close']].to_dict('records')
+    history = temp[['time', 'open', 'high', 'low', 'close', 'volume']].to_dict('records')
 
     return PredictionResponse(
         ticker=ticker,
