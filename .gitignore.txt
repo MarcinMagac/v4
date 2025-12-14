@@ -1,0 +1,12 @@
+# Pliki tymczasowe Pythona
+__pycache__/
+*.py[cod]
+
+# Środowiska wirtualne (jeśli używasz)
+.venv
+venv/
+env/
+
+# Pliki konfiguracyjne z hasłami (bardzo ważne dla projektów Crypto!)
+.env
+config.py

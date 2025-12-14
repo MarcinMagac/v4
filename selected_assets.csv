@@ -1,0 +1,301 @@
+symbol,name,type,currency,exchange
+11B,11 Bit Studios S.A.,stock,PLN,GPW
+AAPL,Apple Inc Common Stock,stock,USD,NASDAQ
+AAVE/USD,Aave,crypto,USD,CRYPTO
+ABBV,AbbVie Inc.,stock,USD,NYSE
+ACN,Accenture plc,stock,USD,NYSE
+ACP,Asseco Poland S.A.,stock,PLN,GPW
+ADA/USD,Cardano,crypto,USD,CRYPTO
+ADBE,Adobe Inc.,stock,USD,NASDAQ
+ALE,Allegro.eu S.A.,stock,PLN,GPW
+ALGO/USD,Algorand,crypto,USD,CRYPTO
+ALR,Alior Bank S.A.,stock,PLN,GPW
+AMAT,Applied Materials Inc.,stock,USD,NASDAQ
+AMD,"Advanced Micro Devices, Inc.",stock,USD,NASDAQ
+AMGN,Amgen Inc.,stock,USD,NASDAQ
+AMZN,Amazon.com Inc.,stock,USD,NASDAQ
+APR,Auto Partner S.A.,stock,PLN,GPW
+APT/USD,Aptos,crypto,USD,CRYPTO
+ARB/USD, Arbitrum,crypto,USD,CRYPTO
+ASB,Asbisc Enterprises PLC,stock,PLN,GPW
+AST,Astarta Holding PLC,stock,PLN,GPW
+ATOM/USD,Cosmos,crypto,USD,CRYPTO
+ATT,Grupa Azoty S.A.,stock,PLN,GPW
+AVAX/USD,Avalanche,crypto,USD,CRYPTO
+AVGO,Broadcom Inc.,stock,USD,NASDAQ
+AXS/USD,Axie Infinity,crypto,USD,CRYPTO
+BA,The Boeing Company,stock,USD,NYSE
+BAC,Bank of America Corporation,stock,USD,NYSE
+BCH/USD,Bitcoin Cash,crypto,USD,CRYPTO
+BDX,Budimex S.A.,stock,PLN,GPW
+BHW,Bank Handlowy w Warszawie S.A.,stock,PLN,GPW
+BIO,Bioton S.A.,stock,PLN,GPW
+BKNG,Booking Holdings Inc.,stock,USD,NASDAQ
+BNB/USD,Binance Coin,crypto,USD,CRYPTO
+BRK.B,Berkshire Hathaway Inc.,stock,USD,NYSE
+BTC/USD,Bitcoin,crypto,USD,CRYPTO
+CAT,Caterpillar Inc.,stock,USD,NYSE
+CCC,CCC S.A.,stock,PLN,GPW
+CDR,Cd Projekt S.A.,stock,PLN,GPW
+CLN,Celon Pharma S.A.,stock,PLN,GPW
+COIN,"Coinbase Global, Inc.",stock,USD,NASDAQ
+COST,Costco Wholesale Corporation,stock,USD,NASDAQ
+CPS,Cyfrowy Polsat S.A.,stock,PLN,GPW
+CRM,Salesforce Inc.,stock,USD,NYSE
+CRO/USD,Crypto.com Coin,crypto,USD,CRYPTO
+CSCO,"Cisco Systems, Inc.",stock,USD,NASDAQ
+CVX,Chevron Corporation,stock,USD,NYSE
+DAI/USD,Dai,crypto,USD,CRYPTO
+DAT,DataWalk S.A.,stock,PLN,GPW
+DIS,The Walt Disney Company,stock,USD,NYSE
+DNP,Dino Polska S.A.,stock,PLN,GPW
+DOGE/USD,Dogecoin,crypto,USD,CRYPTO
+DOT/USD,Dotcoin,crypto,USD,CRYPTO
+DVL,Develia S.A.,stock,PLN,GPW
+EGLD/USD,Elrond,crypto,USD,CRYPTO
+ENA,Enea S.A.,stock,PLN,GPW
+ETC/USD,Ethereum Classic,crypto,USD,CRYPTO
+ETH/USD,Ethereum,crypto,USD,CRYPTO
+EUR,Eurocash S.A.,stock,PLN,GPW
+FIL/USD,Filecoin,crypto,USD,CRYPTO
+FLOW/USD,Flow,crypto,USD,CRYPTO
+GE,General Electric Company,stock,USD,NYSE
+GOOGL,Alphabet Inc.,stock,USD,NASDAQ
+GPW,Warsaw Stock Exchange,stock,PLN,GPW
+GRT/USD,The Graph,crypto,USD,CRYPTO
+GS,Goldman Sachs Group Inc.,stock,USD,NYSE
+GTC,Getech Group PLC,stock,PLN,GPW
+HBAR/USD,Hedera Hashgraph,crypto,USD,CRYPTO
+HD,Home Depot Inc.,stock,USD,NYSE
+HON,Honeywell International Inc.,stock,USD,NASDAQ
+IBM,International Business Machines Corporation,stock,USD,NYSE
+ING,ING Bank Slaski S.A.,stock,PLN,GPW
+INTC,Intel Corporation,stock,USD,NASDAQ
+ISRG,"Intuitive Surgical, Inc.",stock,USD,NASDAQ
+JNJ,Johnson & Johnson,stock,USD,NYSE
+JPM,JPMorgan Chase & Co.,stock,USD,NYSE
+JSW,Jastrzębska Spółka Węglowa S.A.,stock,PLN,GPW
+KCS/USD,KuCoin Shares,crypto,USD,CRYPTO
+KER,Kernel Holding S.A.,stock,PLN,GPW
+KGH,KGHM Polska Miedz S.A.,stock,PLN,GPW
+KO,The Coca-Cola Company,stock,USD,NYSE
+KRU,Kruk S.A.,stock,PLN,GPW
+KTY,Grupa Kety S.A.,stock,PLN,GPW
+LDO/USD,Lido DAO,crypto,USD,CRYPTO
+LIN,Linde plc,stock,USD,NASDAQ
+LINK/USD,Chainlink,crypto,USD,CRYPTO
+LLY,Eli Lilly and Company,stock,USD,NYSE
+LOW,Lowe's Companies Inc.,stock,USD,NYSE
+LPP,LPP SA,stock,PLN,GPW
+LTC/USD,Litecoin,crypto,USD,CRYPTO
+LWB,Lubelski Wegiel Bogdanka S.A.,stock,PLN,GPW
+MA,Mastercard Inc.,stock,USD,NYSE
+MANA/USD,Decentraland,crypto,USD,CRYPTO
+MARA,Mara Holdings Inc.,stock,USD,NASDAQ
+MBK,mBank S.A.,stock,PLN,GPW
+MCD,McDonald's Corporation,stock,USD,NYSE
+META,"Meta Platforms, Inc. Class A Common Stock",stock,USD,NASDAQ
+MIL,Bank Millennium S.A.,stock,PLN,GPW
+MRK,"Merck & Co., Inc.",stock,USD,NYSE
+MSFT,Microsoft Corp.,stock,USD,NASDAQ
+NEAR/USD,NEAR Protocol,crypto,USD,CRYPTO
+NEO/USD,NEO,crypto,USD,CRYPTO
+NFLX,Netflix Inc.,stock,USD,NASDAQ
+NKE,Nike Inc.,stock,USD,NYSE
+NOW,ServiceNow Inc.,stock,USD,NYSE
+NVDA,NVIDIA Corp,stock,USD,NASDAQ
+OPL,Orange Polska S.A.,stock,PLN,GPW
+PEO,Bank Pekao S.A.,stock,PLN,GPW
+PEP,"PepsiCo, Inc.",stock,USD,NASDAQ
+PG,The Procter & Gamble Company,stock,USD,NYSE
+PGE,PGE S.A.,stock,PLN,GPW
+PKN,Orlen S.A.,stock,PLN,GPW
+PKO,Pko Bank Polski S.A.,stock,PLN,GPW
+PKP,Pkp Cargo S.A.,stock,PLN,GPW
+PLTR,Palantir Technologies Inc. Class A,stock,USD,NASDAQ
+PM,Philip Morris International Inc.,stock,USD,NYSE
+PYPL,PayPal Holdings Inc.,stock,USD,NASDAQ
+PZU,Powszechny Zakład Ubezpieczeń S.A.,stock,PLN,GPW
+QCOM,Qualcomm Inc.,stock,USD,NASDAQ
+RIOT,"Riot Platforms, Inc.",stock,USD,NASDAQ
+SAND/USD,The Sandbox,crypto,USD,CRYPTO
+SBUX,Starbucks Corporation,stock,USD,NASDAQ
+SHIB/USD,SHIBA INU,crypto,USD,CRYPTO
+SOL/USD,Solana,crypto,USD,CRYPTO
+SPL,Santander Bank Polska S.A.,stock,PLN,GPW
+TEN,Ten Square Games S.A.,stock,PLN,GPW
+THETA/USD,Theta Network,crypto,USD,CRYPTO
+TON/USD,Toncoin,crypto,USD,CRYPTO
+TPE,Tauron Polska Energia S.A.,stock,PLN,GPW
+TRX/USD,TRON,crypto,USD,CRYPTO
+TSLA,Tesla Inc.,stock,USD,NASDAQ
+TXN,Texas Instruments Inc.,stock,USD,NASDAQ
+TXT,Text S.A.,stock,PLN,GPW
+UBER,"Uber Technologies, Inc.",stock,USD,NYSE
+UNH,UnitedHealth Group Incorporated,stock,USD,NYSE
+UNI/USD,Uniswap,crypto,USD,CRYPTO
+UNP,Union Pacific Corporation,stock,USD,NYSE
+USDC/USD,USD Coin,crypto,USD,CRYPTO
+USDT/USD,Tether,crypto,USD,CRYPTO
+V,Visa Inc,stock,USD,NYSE
+VET/USD,VeChain,crypto,USD,CRYPTO
+WBTC/USD,Wrapped Bitcoin,crypto,USD,CRYPTO
+WMT,Walmart Inc.,stock,USD,NYSE
+WPL,Wirtualna Polska Holding S.A.,stock,PLN,GPW
+XLM/USD,Stellar,crypto,USD,CRYPTO
+XOM,Exxon Mobil Corporation,stock,USD,NYSE
+XRP/USD,XRP,crypto,USD,CRYPTO
+XTB,X-Trade Brokers Dom Maklerski S.A.,stock,PLN,GPW
+XTZ/USD,Tezos,crypto,USD,CRYPTO
+ZEP,Ze Pak S.A.,stock,PLN,GPW
+!otc/GTIJF,Graphjet Technology Ltd.,stock,USD,NASDAQ
+!otc/LNWO,"Light & Wonder, Inc.",stock,USD,NASDAQ
+01C,01Cybaton,stock,PLN,GPW
+06N,Magna Polonia S.A.,stock,PLN,GPW
+08N,NFI Octava S.A.,stock,PLN,GPW
+0A5O,Allegro.eu S.A.,stock,PLN,LSE
+0A9M,Pepco Group N.V.,stock,PLN,LSE
+0DOS,Bank Handlowy w Warszawie S.A.,stock,PLN,LSE
+0DP0,Bank Pekao S.A.,stock,PLN,LSE
+0DRH,Bank Millennium S.A.,stock,PLN,LSE
+0DU3,mBank S.A.,stock,PLN,LSE
+0DVR,Santander Bank Polska S.A.,stock,PLN,LSE
+0FMN,Orlen S.A.,stock,PLN,LSE
+0FMO,Pko Bank Polski S.A.,stock,PLN,LSE
+0GB7,Orange Polska S.A.,stock,PLN,LSE
+0KO8,Enea S.A.,stock,PLN,LSE
+0LQG,Asseco Poland S.A.,stock,PLN,LSE
+0LS5,CCC S.A.,stock,PLN,LSE
+0LSJ,Sygnity S.A.,stock,PLN,LSE
+0LTM,Eurocash S.A.,stock,PLN,LSE
+0LTO,Eurotel S.A.,stock,PLN,LSE
+0LVL,LPP SA,stock,PLN,LSE
+0LX1,Cd Projekt S.A.,stock,PLN,LSE
+0MN3,PGE S.A.,stock,PLN,LSE
+0MNQ,Cyfrowy Polsat S.A.,stock,PLN,LSE
+0MYY,Powszechny Zakład Ubezpieczeń S.A.,stock,PLN,LSE
+0N2X,Tauron Polska Energia S.A.,stock,PLN,LSE
+0O8D,KGHM Polska Miedz S.A.,stock,PLN,LSE
+0OGQ,Amrest Holdings SE,stock,PLN,LSE
+0Q3Y,Kruk S.A.,stock,PLN,LSE
+0Q45,Jastrzębska Spółka Węglowa S.A.,stock,PLN,LSE
+0QBM,Alior Bank S.A.,stock,PLN,LSE
+0RI1,Auto Partner S.A.,stock,PLN,LSE
+0TCP,Dino Polska S.A.,stock,PLN,LSE
+0xBTC/USD,0xBitcoin,crypto,USD,CRYPTO
+1000SATS/USD,SATS,crypto,USD,CRYPTO
+1AT,Atal S.A.,stock,PLN,GPW
+1INCH/USD,1inch,crypto,USD,CRYPTO
+1ST/USD,FirstBlood,crypto,USD,CRYPTO
+2GIVE/USD,2GIVE,crypto,USD,CRYPTO
+300/USD,300 Token,crypto,USD,CRYPTO
+3RG,3R Games S.A.,stock,PLN,GPW
+4MBP,4Mobility SA,stock,PLN,GPW
+4MS,4Mass S.A.,stock,PLN,GPW
+4MSP,4Mass SA,stock,PLN,GPW
+611/USD,SixEleven,crypto,USD,CRYPTO
+7FTP,7Fit SA,stock,PLN,GPW
+7LVP,7Levels SA,stock,PLN,GPW
+808/USD,808Coin,crypto,USD,CRYPTO
+888/USD,OctoCoin,crypto,USD,CRYPTO
+8BIT/USD,8Bit,crypto,USD,CRYPTO
+A,Agilent Technologies Inc.,stock,USD,NYSE
+AA,Alcoa Corporation,stock,USD,NYSE
+AACB,Artius II Acquisition Inc.,stock,USD,NASDAQ
+AACBR,Artius II Acquisition Inc.,stock,USD,NASDAQ
+AACG,Ata Creativity Global ADR,stock,USD,NASDAQ
+AACI,Armada Acquisition Corp. I,stock,USD,NASDAQ
+AACIU,Armada Acquisition Corp. I Unit,stock,USD,NASDAQ
+AACT,Ares Acquisition Corporation II,stock,USD,NYSE
+AAL,American Airlines Group Inc.,stock,USD,NASDAQ
+AAM,Aa Mission Acquisition Corp,stock,USD,NYSE
+AAM.UN,AA Mission Acquisition Corp.,stock,USD,NYSE
+AAM.WT,AA Mission Acquisition Corp WT,stock,USD,NYSE
+AAME,Atlantic American Corporation,stock,USD,NASDAQ
+AAMI,Acadian Asset Management Inc.,stock,USD,NYSE
+AAOI,"Applied Optoelectronics, Inc.",stock,USD,NASDAQ
+AAON,Aaon Inc.,stock,USD,NASDAQ
+AAP,Advance Auto Parts Inc.,stock,USD,NYSE
+AAPG,Ascentage Pharma Group International ADR,stock,USD,NASDAQ
+AAPL,Apple Inc Common Stock,stock,PLN,GPW
+AAQC,Accelerate Acquisition Corp.,stock,USD,NYSE
+AAQC.UN,Accelerate Acquisition Corp.,stock,USD,NYSE
+AARD,"Aardvark Therapeutics, Inc.",stock,USD,NASDAQ
+AAT,Alta S.A.,stock,PLN,GPW
+AAT,"American Assets Trust, Inc.",stock,USD,NYSE
+AATC,Autoscope Technologies Corp.,stock,USD,NASDAQ
+AATP,ALTA SA,stock,PLN,GPW
+AAUC,Allied Gold Corporation,stock,USD,NYSE
+AB,AllianceBernstein Holding L.P.,stock,USD,NYSE
+ABAT,American Battery Technology Company,stock,USD,NASDAQ
+ABCB,Ameris Bancorp,stock,USD,NYSE
+ABCL,AbCellera Biologics Inc.,stock,USD,NASDAQ
+ABE,AB SA,stock,PLN,GPW
+ABEO,Abeona Therapeutics Inc.,stock,USD,NASDAQ
+ABEP,AB SA,stock,PLN,GPW
+ABEV,Ambev S.A.,stock,USD,NYSE
+ABG,Asbury Automotive Group Inc.,stock,USD,NYSE
+ABKP,Abak SA,stock,PLN,GPW
+ABL,Abacus Life Inc.,stock,USD,NASDAQ
+ABLLL,Abacus Life Inc. 9.875% Preferred Stock,stock,USD,NASDAQ
+ABLV,Able View Global Inc.,stock,USD,NASDAQ
+ABLVW,Able View Global Inc. Warrant,stock,USD,NASDAQ
+ABM,ABM Industries Inc.,stock,USD,NYSE
+ABN/USD,Abncoin,crypto,USD,CRYPTO
+ABNB,"Airbnb, Inc.",stock,USD,NASDAQ
+ABOS,"Acumen Pharmaceuticals, Inc.",stock,USD,NASDAQ
+ABP,Abpro Holdings Inc.,stock,USD,NASDAQ
+ABPWW,Atlantic Coast Acquisition Corp. Warrants,stock,USD,NASDAQ
+ABR,Arbor Realty Trust Inc.,stock,USD,NYSE
+ABR-D,"Arbor Realty Trust, Inc.",stock,USD,NYSE
+ABR-E,Arbor Realty Trust 6.25% Series,stock,USD,NYSE
+ABR.PR.D,"Arbor Realty Trust, Inc.",stock,USD,NYSE
+ABR.PR.E,"Arbor Realty Trust, Inc.",stock,USD,NYSE
+ABR.PR.F,Arbor Realty Trust 6.25% Series,stock,USD,NYSE
+ABS,Asseco Business Solutions S.A.,stock,PLN,GPW
+ABSI,Absci Corporation,stock,USD,NASDAQ
+ABSP,Asseco Business Solutions SA,stock,PLN,GPW
+ABT,Abbott Laboratories,stock,USD,NYSE
+ABTC,"Gryphon Digital Mining, Inc",stock,USD,NASDAQ
+ABTS,Abits Group Inc.,stock,USD,NASDAQ
+ABUS,Arbutus Biopharma Corporation,stock,USD,NASDAQ
+ABVC,ABVC BioPharma Inc.,stock,USD,NASDAQ
+ABVE,Above Food Ingredients Inc.,stock,USD,NASDAQ
+ABVEW,Above Food Corp.,stock,USD,NASDAQ
+ABVX,Abivax S.A. American Depositary Receipt,stock,USD,NASDAQ
+AC/USD,AsiaCoin,crypto,USD,CRYPTO
+ACA,Arcosa Inc.,stock,USD,NYSE
+ACA/USD,Acala Token,crypto,USD,CRYPTO
+ACAB,Abpro Holdings Inc.,stock,USD,NASDAQ
+ACAD,Acadia Pharmaceuticals Inc.,stock,USD,NASDAQ
+ACAHW,Atlantic Coastal Acquisition Corp. - Warrant,stock,USD,NASDAQ
+ACAXW,Alset Capital Acquisition Corp.,stock,USD,NASDAQ
+ACB,Aurora Cannabis Inc.,stock,USD,NASDAQ
+ACC/USD,AdCoin,crypto,USD,CRYPTO
+ACCL,Acco Group Holdings Ltd.,stock,USD,NASDAQ
+ACCO,Acco Brands Corporation,stock,USD,NYSE
+ACCS,Access Newswire Inc.,stock,USD,NYSE
+ACDC,ProFrac Holding Corp.,stock,USD,NASDAQ
+ACEL,Accel Entertainment Inc.,stock,USD,NYSE
+ACES/USD,Aces,crypto,USD,CRYPTO
+ACET,"Adicet Bio, Inc.",stock,USD,NASDAQ
+ACFN,Acorn Energy Inc.,stock,USD,NASDAQ
+ACG,Arcadis N.V.,stock,PLN,GPW
+ACGL,Arch Capital Group Ltd.,stock,USD,NASDAQ
+ACGLN,"Arch Capital Group Ltd. 4.55% Non-Cumulative Preferred Shares, Series G",stock,USD,NASDAQ
+ACGLO,"Arch Capital Group Ltd. 5.45% Non-Cumulative Preferred Shares, Series F",stock,USD,NASDAQ
+ACGP,AC SA,stock,PLN,GPW
+ACH/USD,Alchemy Pay,crypto,USD,CRYPTO
+ACHC,"Acadia Healthcare Company, Inc.",stock,USD,NASDAQ
+ACHR,Archer Aviation Inc.,stock,USD,NYSE
+ACHR.WT,"Archer Aviation Inc. Redeemable Warrants, each whole warrant exercisable for one Class A common stock at an exercise price of $11.50",stock,USD,NYSE
+ACHV,Achieve Life Sciences Inc.,stock,USD,NASDAQ
+ACI,"Albertsons Companies, Inc.",stock,USD,NYSE
+ACIC,American Coastal Insurance Corp.,stock,USD,NASDAQ
+ACIU,Acimmune SA,stock,USD,NASDAQ
+ACIW,Aci Worldwide Inc.,stock,USD,NASDAQ
+ACLS,"Axcelis Technologies, Inc.",stock,USD,NASDAQ
+ACLX,"Arcellx, Inc.",stock,USD,NASDAQ
+ACM,Aecom,stock,USD,NYSE
+ACMR,Acm Research Inc.,stock,USD,NASDAQ
+ACNB,ACNB Corp.,stock,USD,NASDAQ

@@ -1,0 +1,150 @@
+/* mobile.css - Pancerny Układ Sztywny */
+
+/* Klasy pomocnicze domyślne (niewidoczne na Desktop) */
+.menu-backdrop { display: none; }
+.mobile-menu-label { display: none; }
+
+/* ------------------------------------------------------------------ */
+/* MEDIA QUERY: TELEFONY (MAX-WIDTH 768px)                            */
+/* ------------------------------------------------------------------ */
+@media (max-width: 768px) {
+
+  /* 1. GŁÓWNY KONTENER - Sztywna wysokość viewportu */
+  .app-container {
+    height: 100dvh; /* Dynamic viewport height - ignoruje pasek adresu */
+    width: 100vw;
+    overflow: hidden; /* Żadnego scrollowania całej strony */
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* 2. TOPBAR - Przełączamy na tryb wieloliniowy (Wrap) */
+  .topbar {
+    display: flex;
+    flex-wrap: wrap; /* Pozwalamy elementom spadać do nowych linii */
+    height: auto !important; /* Wysokość automatyczna */
+    padding: 8px;
+    gap: 8px;
+    background: #0b0e11;
+    border-bottom: 1px solid #181a20;
+    flex-shrink: 0; /* Nie kurcz się */
+    align-items: stretch; /* Rozciągnij elementy do wysokości linii */
+  }
+
+  /* 3. UKRYWAMY ELEMENTY ZBĘDNE NA MOBILE */
+  .brand { display: none; }
+
+  /* 4. REARANŻACJA ELEMENTÓW (ORDER & FLEX-BASIS) */
+
+  /* Rząd 1: Asset (Lewo) + API Widget (Prawo) */
+  .control-group.cg-asset {
+    order: 1;
+    flex: 1 1 70%; /* Zajmij 70% szerokości */
+    border: none; padding: 0;
+    height: 40px;
+  }
+  .api-widget {
+    order: 2;
+    flex: 0 0 44px; /* Sztywna szerokość */
+    height: 40px;
+    margin: 0 !important;
+    border: 1px solid #2b3139; border-radius: 4px;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+  }
+  .api-text { display: none; } /* Ukryj tekst "API:" bo się nie zmieści */
+  .api-bar-bg { width: 80%; }
+
+  /* Rząd 2: Timeframes (Cała szerokość) */
+  .control-group.cg-timeframe {
+    order: 3;
+    flex: 1 1 100%; /* Nowa linia, 100% szerokości */
+    border: none; padding: 0;
+    height: 36px;
+  }
+  .tf-group {
+    display: flex; width: 100%; height: 100%;
+    border: none; padding: 0; gap: 4px;
+  }
+  .btn-tf {
+    flex: 1; /* Rozłóż przyciski po równo */
+    height: 100%;
+    background: #181a20; border: 1px solid #2b3139;
+    font-size: 12px; font-weight: 700;
+  }
+
+  /* Rząd 3: Indicators + AI/RUN */
+  .control-group.cg-indicators {
+    order: 4;
+    flex: 1 1 35%; /* 35% szerokości */
+    border: none; padding: 0;
+    height: 44px; /* Wyższe pod palec */
+  }
+  .control-group.cg-run {
+    order: 5;
+    flex: 1 1 60%; /* 60% szerokości */
+    border: none; padding: 0;
+    height: 44px;
+    gap: 6px;
+  }
+
+  /* Stylizacja przycisków w Rzędzie 3 */
+  .btn-dropdown, .select-field {
+    width: 100%; height: 100%;
+    background: #181a20; border: 1px solid #2b3139;
+    color: #eaecef; font-size: 13px; font-weight: 600;
+    border-radius: 6px;
+  }
+
+  /* Select Assets musi być większy */
+  .cg-asset .select-field {
+    font-size: 16px; /* Stop zoom iOS */
+    padding-left: 10px;
+  }
+
+  .btn-action.btn-primary {
+    height: 100%;
+    padding: 0 15px;
+    background: #fcd535; color: #000;
+    font-weight: 800; font-size: 14px;
+    border-radius: 6px;
+  }
+
+  /* 5. MODAL WSKAŹNIKÓW (POPUP NA ŚRODKU) */
+  .menu-backdrop {
+    display: block; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.8); z-index: 100;
+  }
+  .dropdown-menu {
+    position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 80%; max-width: 300px; max-height: 60vh;
+    background: #1e2329; border: 1px solid #474d57;
+    z-index: 101; border-radius: 8px;
+    display: flex; flex-direction: column; padding: 0;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.9);
+  }
+  .mobile-menu-label {
+    display: block; padding: 15px; background: #2b3139;
+    text-align: center; font-weight: bold; font-size: 12px; color: #848e9c;
+    border-bottom: 1px solid #181a20;
+  }
+  .checkbox-item {
+    padding: 15px 20px; border-bottom: 1px solid #2b3139;
+    font-size: 15px;
+  }
+
+  /* 6. WYKRES (WYPEŁNIA RESZTĘ) */
+  .main-content {
+    flex: 1; /* Zajmuje wszystko co zostało */
+    position: relative;
+    width: 100%;
+    overflow: hidden; /* Wykres nigdy nie wyjdzie poza obszar */
+    min-height: 0; /* Fix dla Firefox Flexbox */
+  }
+
+  .market-header {
+    flex-shrink: 0; /* Pasek info się nie kurczy */
+    height: 30px;
+    border-bottom: 1px solid #181a20;
+    padding: 0 10px;
+  }
+}
