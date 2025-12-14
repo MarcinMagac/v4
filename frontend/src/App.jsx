@@ -19,6 +19,7 @@ function App() {
   const [selectedIndicators, setSelectedIndicators] = useState([]);
   const debouncedIndicators = useDebounce(selectedIndicators, 100);
   const [showIndicators, setShowIndicators] = useState(false);
+  const [showSR, setShowSR] = useState(false); // <--- NOWY STAN
   const [selectedMethod, setSelectedMethod] = useState('simple_ma');
   const [horizon, setHorizon] = useState(14);
   const [aiStatus, setAiStatus] = useState('Idle');
@@ -28,6 +29,7 @@ function App() {
   const [availableAssets, setAvailableAssets] = useState([{ value: "BTC/USD", label: "Bitcoin", type: "crypto" }]);
   const [availableMethods, setAvailableMethods] = useState([{ key: 'simple_ma', name: 'Simple MA' }]);
   const [availableIndicators, setAvailableIndicators] = useState([]);
+  const [predictionHistory, setPredictionHistory] = useState([]);
 
   useEffect(() => {
     const init = async () => {
@@ -40,7 +42,7 @@ function App() {
         if(assets.assets) setAvailableAssets(assets.assets);
         if(methods.methods) { setAvailableMethods(methods.methods); setSelectedMethod(methods.methods[0].key); }
         if(indicators.indicators) setAvailableIndicators(indicators.indicators);
-      } catch(e) { console.error("Init Error", e); }
+      } catch(e) { console.error(e); }
     };
     init();
   }, []);
@@ -54,11 +56,29 @@ function App() {
       const data = await res.json();
       if (data.api_usage) setApiUsage(data.api_usage);
       setCachedData(data);
+
+      if (isForecast && data.predictions && data.predictions.length > 0) {
+          const newPrediction = {
+              id: Date.now(),
+              timestamp: Date.now(),
+              model: selectedMethod,
+              data: data.predictions[0]
+          };
+          setPredictionHistory(prev => [...prev, newPrediction]);
+      }
+
       if (isForecast) setAiStatus('Done');
     } catch (e) { console.error(e); setAiStatus('Error'); }
   };
 
-  useEffect(() => { if(ticker) handleFetch(false); }, [ticker, interval, debouncedIndicators]);
+  useEffect(() => {
+      if(ticker) {
+          handleFetch(false);
+          setPredictionHistory([]);
+      }
+  }, [ticker, interval]);
+
+  useEffect(() => { if(ticker) handleFetch(false); }, [debouncedIndicators]);
 
   const toggleIndicator = (k) => setSelectedIndicators(prev => prev.includes(k) ? prev.filter(i=>i!==k) : [...prev, k]);
 
@@ -74,6 +94,7 @@ function App() {
         availableIndicators={availableIndicators}
         toggleIndicator={toggleIndicator}
         showIndicators={showIndicators} setShowIndicators={setShowIndicators}
+        showSR={showSR} setShowSR={setShowSR} // <--- PRZEKAZANIE DO TOPBAR
         selectedMethod={selectedMethod} setSelectedMethod={setSelectedMethod}
         availableMethods={availableMethods}
         handleFetch={handleFetch}
@@ -82,10 +103,31 @@ function App() {
       <div className="market-header">
         <div className="metric">PRICE: <span className={marketData.change>=0?'up':'down'}>{marketData.lastPrice.toFixed(2)}</span></div>
         <div className="metric">CHANGE: <span className={marketData.change>=0?'up':'down'}>{marketData.change.toFixed(2)} ({marketData.changePercent.toFixed(2)}%)</span></div>
-        {appMode === 'lab' && <div className="metric" style={{marginLeft:'auto', color: '#fcd535'}}>AI: {aiStatus}</div>}
+        {appMode === 'lab' && (
+          <div style={{marginLeft:'auto', display:'flex', gap:'15px', alignItems:'center'}}>
+             {cachedData?.predictions?.[0]?.confidence_score !== undefined && (
+                <div className="metric" style={{
+                    color: cachedData.predictions[0].confidence_score >= 60 ? '#0ecb81' :
+                           cachedData.predictions[0].confidence_score >= 45 ? '#fcd535' : '#f6465d',
+                    border: '1px solid #2b3139',
+                    padding: '2px 8px',
+                    borderRadius: '4px'
+                }}>
+                  CONFIDENCE: {cachedData.predictions[0].confidence_score}%
+                </div>
+             )}
+             <div className="metric" style={{color: '#fcd535'}}>AI: {aiStatus}</div>
+          </div>
+        )}
       </div>
       <main className="main-content">
-        <ChartContainer data={cachedData} appMode={appMode} onPriceUpdate={setMarketData} />
+        <ChartContainer
+            data={cachedData}
+            appMode={appMode}
+            onPriceUpdate={setMarketData}
+            predictionHistory={predictionHistory}
+            showSR={showSR} // <--- PRZEKAZANIE DO WYKRESU
+        />
       </main>
     </div>
   );

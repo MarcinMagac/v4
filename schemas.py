@@ -11,25 +11,14 @@ class ForecastRequest(BaseModel):
 class ForecastResult(BaseModel):
     method_name: str
     forecast_values: Dict[str, float]
-
-class Candle(BaseModel):
-    time: int
-    open: float
-    high: float
-    low: float
-    close: float
-
-class ApiUsage(BaseModel):
-    limit: int
-    used: int
-    remaining: int
-    percent: float
+    confidence_score: Optional[float] = None  # <--- [DODAJ TO POLE]
 
 class IndicatorSeriesDef(BaseModel):
     name: str
     type: str
     color: str
     data: List[Dict[str, Any]]
+    panel_id: Optional[str] = None
 
 class ChartPanel(BaseModel):
     id: str
@@ -38,9 +27,9 @@ class ChartPanel(BaseModel):
 
 class PredictionResponse(BaseModel):
     ticker: str
-    history: List[Candle]
-    predictions: List[ForecastResult]
-    technical_indicators: List[IndicatorSeriesDef] = []
-    panels: List[ChartPanel] = []
     status: str
-    api_usage: Optional[ApiUsage] = None
+    history: List[Dict[str, float]]
+    predictions: List[ForecastResult]
+    technical_indicators: List[IndicatorSeriesDef]
+    panels: List[ChartPanel]
+    api_usage: Dict[str, Any]
