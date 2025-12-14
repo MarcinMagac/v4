@@ -1,6 +1,7 @@
 import os
 import requests
 import pandas as pd
+import time  # <--- [NOWOŚĆ] Importujemy time do obsługi TTL
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -9,6 +10,7 @@ load_dotenv()
 class DataClient:
     BASE_URL = "https://api.twelvedata.com"
     CSV_FILE = "selected_assets.csv"
+    CACHE_TTL = 60  # <--- [NOWOŚĆ] Czas życia danych w sekundach (1 minuta)
 
     def __init__(self):
         self.api_key = os.getenv("TWELVE_DATA_API_KEY")
@@ -16,6 +18,7 @@ class DataClient:
         self._cache = {}
         self.available_assets = self._load_assets_from_csv()
 
+    # ... (metoda _load_assets_from_csv bez zmian) ...
     def _load_assets_from_csv(self):
         # Pobieranie ścieżki absolutnej
         current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -45,10 +48,20 @@ class DataClient:
     def get_all_assets(self):
         return self.available_assets
 
+    # --- [ZMODYFIKOWANA METODA] ---
     def fetch_series(self, symbol: str, interval: str = "1day", outputsize: int = 500) -> pd.DataFrame:
         clean_symbol = symbol.upper()
         cache_key = f"{clean_symbol}_{interval}"
-        if cache_key in self._cache: return self._cache[cache_key]
+        current_time = time.time()
+
+        # [NOWOŚĆ] Sprawdzanie wieku danych
+        if cache_key in self._cache:
+            data, timestamp = self._cache[cache_key]
+            # Jeśli dane są młodsze niż CACHE_TTL, zwracamy je
+            if current_time - timestamp < self.CACHE_TTL:
+                return data
+            else:
+                print(f"[CACHE] Dane wygasły dla {clean_symbol}, odświeżam...")
 
         params = {"symbol": clean_symbol, "interval": interval, "outputsize": outputsize, "apikey": self.api_key,
                   "order": "ASC"}
@@ -65,12 +78,18 @@ class DataClient:
             df.set_index("datetime", inplace=True)
             for c in ["open", "high", "low", "close"]: df[c] = df[c].astype(float)
 
-            # Backend v18 nie zwracał volume
             final_df = df[["open", "high", "low", "close"]]
-            self._cache[cache_key] = final_df
+
+            # [NOWOŚĆ] Zapisujemy dane RAZEM z czasem pobrania
+            self._cache[cache_key] = (final_df, current_time)
+
             return final_df
         except Exception as e:
             print(f"Błąd API: {e}")
+            # Jeśli API zawiedzie, spróbuj zwrócić stare dane z cache (fallback), jeśli istnieją
+            if cache_key in self._cache:
+                print("[API] Używam starych danych z cache (Awaryjnie)")
+                return self._cache[cache_key][0]
             raise e
 
     def get_quota(self):
