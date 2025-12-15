@@ -6,6 +6,14 @@ import ChartContainer from './components/ChartContainer';
 
 const API_URL = "http://127.0.0.1:8000";
 
+// Helper do formatowania dużych liczb (np. 1.2M)
+const formatVol = (val) => {
+  if (!val) return '0';
+  if (val >= 1000000) return (val / 1000000).toFixed(2) + 'M';
+  if (val >= 1000) return (val / 1000).toFixed(2) + 'K';
+  return val.toFixed(0);
+};
+
 const useDebounce = (value, delay) => {
   const [debouncedValue, setDebouncedValue] = useState(value);
   useEffect(() => { const handler = setTimeout(() => setDebouncedValue(value), delay); return () => clearTimeout(handler); }, [value, delay]);
@@ -83,6 +91,13 @@ function App() {
 
   const toggleIndicator = (k) => setSelectedIndicators(prev => prev.includes(k) ? prev.filter(i=>i!==k) : [...prev, k]);
 
+  // --- LOGIKA VOLUMENU (NAPRAWIONA) ---
+  // Sprawdzamy czy w ogóle mamy wolumen w danych (czy suma > 0)
+  const hasVolume = cachedData?.history?.some(d => d.volume > 0) || false;
+  // Pobieramy wartość z ostatniej świeczki do wyświetlenia w nagłówku
+  const currentVolume = cachedData?.history?.[cachedData.history.length - 1]?.volume || 0;
+  // -------------------------------------
+
   return (
     <div className="app-container">
       <TopBar
@@ -101,10 +116,21 @@ function App() {
         availableMethods={availableMethods}
         handleFetch={handleFetch}
         aiStatus={aiStatus}
+        // Przekazanie horyzontu (było w poprzednim kroku, dodaję dla pewności)
+        horizon={horizon} setHorizon={setHorizon}
       />
+
       <div className="market-header">
         <div className="metric">PRICE: <span className={marketData.change>=0?'up':'down'}>{marketData.lastPrice.toFixed(2)}</span></div>
         <div className="metric">CHANGE: <span className={marketData.change>=0?'up':'down'}>{marketData.change.toFixed(2)} ({marketData.changePercent.toFixed(2)}%)</span></div>
+
+        {/* NAPRAWIONE WYSWIETLANIE WOLUMENU */}
+        <div className="metric">
+            VOLUME: <span style={{color: '#848e9c', fontWeight: 'bold'}}>
+                {hasVolume ? formatVol(currentVolume) : "NO VOLUME"}
+            </span>
+        </div>
+
         {appMode === 'lab' && (
           <div style={{marginLeft:'auto', display:'flex', gap:'15px', alignItems:'center'}}>
              {cachedData?.predictions?.[0]?.confidence_score !== undefined && (
@@ -122,6 +148,7 @@ function App() {
           </div>
         )}
       </div>
+
       <main className="main-content">
         <ChartContainer
             data={cachedData}
@@ -129,7 +156,8 @@ function App() {
             onPriceUpdate={setMarketData}
             predictionHistory={predictionHistory}
             showSR={showSR}
-            showVolume={showVolume}
+            // KLUCZOWE: Jeśli brak danych (hasVolume=false), wymuszamy ukrycie serii na wykresie
+            showVolume={showVolume && hasVolume}
         />
       </main>
     </div>
