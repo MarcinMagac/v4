@@ -9,6 +9,7 @@ from core.data_client import client as data_client
 from schemas import ForecastRequest, PredictionResponse, ForecastResult, ChartPanel, IndicatorSeriesDef
 from core.indicators_lib import calculate_indicator, get_indicators_metadata
 from core.backtester import calculate_confidence
+from core.logger import get_logs
 
 app = FastAPI(title="Fintech Engine", version="v32.0_FIXED_TIME")
 
@@ -48,6 +49,10 @@ def startup_event():
 def list_assets():
     return {"assets": data_client.get_all_assets()}
 
+@app.get("/api/logs")
+def api_get_logs():
+    """Frontend odpytuje ten endpoint co chwilę"""
+    return {"logs": get_logs()}
 
 @app.get("/methods")
 def list_methods():

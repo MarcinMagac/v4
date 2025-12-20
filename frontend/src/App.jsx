@@ -3,6 +3,7 @@ import './App.css';
 import './mobile.css';
 import TopBar from './components/TopBar';
 import ChartContainer from './components/ChartContainer';
+import LogConsole from './components/LogConsole';
 
 const API_URL = "http://127.0.0.1:8000";
 
@@ -116,8 +117,8 @@ function App() {
         availableMethods={availableMethods}
         handleFetch={handleFetch}
         aiStatus={aiStatus}
-        // Przekazanie horyzontu (było w poprzednim kroku, dodaję dla pewności)
         horizon={horizon} setHorizon={setHorizon}
+
       />
 
       <div className="market-header">
@@ -160,6 +161,7 @@ function App() {
             showVolume={showVolume && hasVolume}
         />
       </main>
+      <LogConsole />
     </div>
   );
 }
